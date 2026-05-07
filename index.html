@@ -1007,6 +1007,58 @@
     position: relative;
   }
 
+  /* ===== Email input above Pay button ===== */
+  .email-row {
+    margin: 4px 0 14px;
+    text-align: left;
+    position: relative;
+  }
+  .email-label {
+    display: block;
+    color: white;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 6px;
+    padding-left: 2px;
+  }
+  .email-input {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 999px;
+    border: 1.5px solid rgba(255, 255, 255, 0.35);
+    background: rgba(255, 255, 255, 0.95);
+    font-family: var(--sans);
+    font-size: 15px;
+    color: var(--berry);
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+    box-sizing: border-box;
+  }
+  .email-input::placeholder {
+    color: rgba(90, 29, 61, 0.4);
+  }
+  .email-input:focus {
+    border-color: var(--butter);
+    background: white;
+  }
+  .email-input.error {
+    border-color: #ff8a8a;
+    background: #fff5f5;
+    animation: shake 0.4s;
+  }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-5px); }
+    40%, 80% { transform: translateX(5px); }
+  }
+  .email-error {
+    color: #fff5b8;
+    font-size: 12px;
+    margin: 6px 0 0 14px;
+    min-height: 14px;
+    font-weight: 500;
+  }
+
   /* ===== Disclosure text above button ===== */
   .agree-text-line {
     color: rgba(255, 255, 255, 0.88);
@@ -1727,7 +1779,7 @@
             <span><strong id="live-count">347</strong> people unlocked their matches in the last 24 hours</span>
           </div>
 
-          <div class="pricing-card">
+          <div class="pricing-card" id="pricing-card">
             <div class="pricing-badge">⚡ Limited launch price</div>
 
             <div class="price-row">
@@ -1739,6 +1791,20 @@
             <p class="agree-text-line">
               By continuing, you agree to GiftMatch's <a href="#faq">Terms</a> and <a href="#faq">Privacy Policy</a>. Your purchase includes a 12-gift report and a 2-day trial of GiftMatch Plus. After the trial, your subscription auto-renews at $29.99/month until you cancel. Cancel anytime — no questions asked.
             </p>
+
+            <!-- Email input — required to send results & legally-required pre-billing email -->
+            <div class="email-row">
+              <label class="email-label" for="email-input">Where should we send your results?</label>
+              <input
+                type="email"
+                id="email-input"
+                class="email-input"
+                placeholder="your@email.com"
+                autocomplete="email"
+                required
+              >
+              <p class="email-error" id="email-error"></p>
+            </div>
 
             <button class="unlock-btn" onclick="goToCheckout()">
               Pay now $0.99
@@ -1950,7 +2016,7 @@
   <div class="sticky-cta-info">
     <div class="sticky-cta-price"><span class="sticky-cta-strike">$9.99</span>$0.99</div>
   </div>
-  <button class="sticky-cta-btn" onclick="goToCheckout()">Continue →</button>
+  <button class="sticky-cta-btn" onclick="scrollToPricing()">Continue →</button>
 </div>
 
 <!-- Social proof toast — fake-but-not-fake nudges -->
@@ -2470,13 +2536,61 @@ function showAIResults(data, isFallback) {
 // ============================================================
 const STRIPE_LINK = 'https://buy.stripe.com/28EcMZf9QfhT5Wk2HX0Jq02';
 
+// Scroll from sticky bar Continue → to pricing card with focus on email input
+function scrollToPricing() {
+  const card = document.getElementById('pricing-card');
+  if (!card) return;
+  card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  setTimeout(() => {
+    const emailInput = document.getElementById('email-input');
+    if (emailInput) emailInput.focus();
+  }, 600);
+}
+
+// Email validation — basic but solid
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim());
+}
+
 function goToCheckout() {
-  // Track quiz answers in URL so you can correlate purchase → profile in Stripe metadata
+  const emailInput = document.getElementById('email-input');
+  const emailError = document.getElementById('email-error');
+  const email = emailInput ? emailInput.value.trim() : '';
+
+  // Email validation gate
+  if (!email) {
+    if (emailInput) {
+      emailInput.classList.add('error');
+      emailInput.focus();
+    }
+    if (emailError) emailError.textContent = '⚠️ Please enter your email';
+    return;
+  }
+  if (!isValidEmail(email)) {
+    if (emailInput) {
+      emailInput.classList.add('error');
+      emailInput.focus();
+    }
+    if (emailError) emailError.textContent = '⚠️ Please enter a valid email address';
+    return;
+  }
+
+  // Clean up errors if they were showing
+  if (emailInput) emailInput.classList.remove('error');
+  if (emailError) emailError.textContent = '';
+
+  // Save email + ref id locally so we can recover after Stripe redirect
   const refId = 'quiz_' + Date.now();
   sessionStorage.setItem('giftmatch_pending_ref', refId);
+  sessionStorage.setItem('giftmatch_email', email);
 
-  // Open Stripe — use same window so back-button works naturally
-  window.location.href = STRIPE_LINK + '?client_reference_id=' + refId;
+  // Open Stripe with email prefilled + reference ID
+  // prefilled_email opens Stripe checkout with the email already filled in
+  const url = STRIPE_LINK
+    + '?client_reference_id=' + encodeURIComponent(refId)
+    + '&prefilled_email=' + encodeURIComponent(email);
+
+  window.location.href = url;
 }
 
 // ============================================================
