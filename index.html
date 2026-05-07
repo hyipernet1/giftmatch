@@ -1721,26 +1721,6 @@
             <!-- Filled dynamically with 3 AI-generated preview items -->
           </div>
 
-          <!-- Why-buy bullets — concrete, scannable, removes objections -->
-          <div class="why-buy">
-            <div class="why-buy-item">
-              <span class="why-buy-icon">✓</span>
-              <span><strong>12 personalised gifts</strong> — from €15 to €200, ranked by fit</span>
-            </div>
-            <div class="why-buy-item">
-              <span class="why-buy-icon">✓</span>
-              <span><strong>Direct links to buy</strong> — every gift ships across the EU in 2–5 days</span>
-            </div>
-            <div class="why-buy-item">
-              <span class="why-buy-icon">✓</span>
-              <span><strong>Bonus animated e-card</strong> — pair your gift with the perfect note</span>
-            </div>
-            <div class="why-buy-item">
-              <span class="why-buy-icon">✓</span>
-              <span><strong>14-day money-back guarantee</strong> — if you're not blown away, we refund. No questions.</span>
-            </div>
-          </div>
-
           <!-- Urgency strip with social proof -->
           <div class="urgency-strip">
             <span class="live-dot"></span>
@@ -1968,8 +1948,7 @@
 <!-- Sticky CTA bar — appears after quiz to keep checkout always visible -->
 <div class="sticky-cta-bar" id="sticky-cta">
   <div class="sticky-cta-info">
-    <div class="sticky-cta-price"><span class="sticky-cta-strike">$9.99</span>$0.99 today</div>
-    <div class="sticky-cta-sub">Then $29.99/mo · Cancel anytime · ⏱️ <span id="sticky-countdown">15:00</span></div>
+    <div class="sticky-cta-price"><span class="sticky-cta-strike">$9.99</span>$0.99</div>
   </div>
   <button class="sticky-cta-btn" onclick="goToCheckout()">Continue →</button>
 </div>
@@ -2551,7 +2530,8 @@ if (new URLSearchParams(window.location.search).get('paid') === 'true') {
 }
 
 // ============================================================
-// CRO TRIGGERS — countdown, sticky bar, social toasts, exit popup
+// ============================================================
+// CRO TRIGGERS — sticky bar + social toasts only
 // ============================================================
 function initCROTriggers() {
   // 1) Sticky CTA bar appears after a brief delay
@@ -2559,52 +2539,8 @@ function initCROTriggers() {
     document.getElementById('sticky-cta').classList.add('show');
   }, 2500);
 
-  // 2) Countdown timer (15 minutes) — shared between pricing card and sticky bar
-  startCountdown(15 * 60);
-
-  // 3) Scarcity counter slowly decreasing
-  startScarcityCounter();
-
-  // 4) Social proof toasts — rotating notifications
+  // 2) Social proof toasts — rotating notifications
   startSocialToasts();
-}
-
-// Countdown ─────────────────────────────────────────────────
-function startCountdown(seconds) {
-  const elPricing = document.getElementById('countdown');
-  const elSticky = document.getElementById('sticky-countdown');
-  let remaining = seconds;
-
-  const tick = () => {
-    if (remaining <= 0) {
-      // Reset for the impatient — keeps urgency persistent without being a fake one-time deal
-      remaining = 15 * 60;
-    }
-    const m = Math.floor(remaining / 60);
-    const s = remaining % 60;
-    const formatted = String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
-    if (elPricing) elPricing.textContent = formatted;
-    if (elSticky) elSticky.textContent = formatted;
-    remaining--;
-  };
-
-  tick();
-  setInterval(tick, 1000);
-}
-
-// Scarcity counter ──────────────────────────────────────────
-function startScarcityCounter() {
-  const elFill = document.getElementById('scarcity-fill');
-  const elNum = document.getElementById('spots-left');
-  let spots = 22;
-
-  setInterval(() => {
-    if (Math.random() > 0.7 && spots > 8) {
-      spots--;
-      if (elNum) elNum.textContent = spots;
-      if (elFill) elFill.style.width = (spots / 30 * 100) + '%';
-    }
-  }, 18000);
 }
 
 // Social proof toasts ───────────────────────────────────────
