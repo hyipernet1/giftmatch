@@ -1001,6 +1001,36 @@
   .price-amount { font-family: var(--serif); font-size: 64px; font-weight: 600; line-height: 1; font-variation-settings: "WONK" 1; }
   .price-period { opacity: 0.9; font-size: 14px; }
   .price-label { font-size: 14px; opacity: 0.95; margin-bottom: 20px; position: relative; }
+
+  /* Subscription notice — visible disclosure required for compliance */
+  .subscription-notice {
+    background: rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: var(--r-sm);
+    padding: 12px 14px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    text-align: left;
+    position: relative;
+    backdrop-filter: blur(4px);
+  }
+  .notice-icon {
+    font-size: 20px;
+    flex-shrink: 0;
+    line-height: 1.3;
+  }
+  .notice-text {
+    color: white;
+    font-size: 13px;
+    line-height: 1.5;
+    flex: 1;
+  }
+  .notice-text strong {
+    color: white;
+    font-weight: 600;
+  }
   .unlock-btn {
     background: var(--berry);
     color: var(--cream);
@@ -1327,7 +1357,297 @@
   .cookie-actions button:hover { transform: translateY(-1px); }
 
   /* ====== RESPONSIVE ====== */
+  /* ===== CRO ELEMENTS — built for conversion ===== */
+
+  /* Sticky bottom bar — visible during result/unlocked states */
+  .sticky-cta-bar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: var(--paper);
+    border-top: 1px solid rgba(90, 29, 61, 0.12);
+    padding: 14px 20px;
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    z-index: 90;
+    box-shadow: 0 -8px 30px rgba(90, 29, 61, 0.08);
+    animation: slideUpFromBottom 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .sticky-cta-bar.show { display: flex; }
+  @keyframes slideUpFromBottom {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+  .sticky-cta-info { flex: 1; min-width: 0; }
+  .sticky-cta-price {
+    font-family: var(--serif);
+    font-weight: 600;
+    color: var(--berry);
+    font-size: 18px;
+  }
+  .sticky-cta-strike {
+    text-decoration: line-through;
+    opacity: 0.5;
+    margin-right: 6px;
+    font-size: 14px;
+    color: var(--berry-soft);
+  }
+  .sticky-cta-sub {
+    font-size: 12px;
+    color: var(--berry-soft);
+    margin-top: 2px;
+  }
+  .sticky-cta-btn {
+    background: var(--coral);
+    color: white;
+    border: none;
+    padding: 14px 24px;
+    border-radius: 999px;
+    font-family: var(--sans);
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 0 var(--coral-deep);
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+  .sticky-cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 var(--coral-deep);
+  }
+
+  /* Countdown timer */
+  .countdown-strip {
+    background: linear-gradient(90deg, #FFE8E8 0%, #FFF0E5 100%);
+    border: 1px solid #FFB8B8;
+    border-radius: var(--r-sm);
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 14px;
+    color: #A03030;
+    font-weight: 500;
+  }
+  .countdown-icon { font-size: 18px; animation: tickTock 1s ease-in-out infinite; }
+  @keyframes tickTock {
+    0%, 100% { transform: rotate(-8deg); }
+    50% { transform: rotate(8deg); }
+  }
+  .countdown-time {
+    font-family: var(--serif);
+    font-weight: 700;
+    color: #800020;
+    font-size: 17px;
+    background: rgba(255, 255, 255, 0.6);
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Scarcity counter */
+  .scarcity-strip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--berry-soft);
+    margin-bottom: 16px;
+  }
+  .scarcity-bar {
+    flex: 1;
+    max-width: 180px;
+    height: 6px;
+    background: var(--cream-deep);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .scarcity-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #FFD93D 0%, #FF7F66 100%);
+    border-radius: 999px;
+    transition: width 1s ease;
+  }
+
+  /* Money-back guarantee badge — prominent */
+  .guarantee-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--sage);
+    color: var(--berry);
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    border: 1px solid var(--sage-deep);
+  }
+
+  /* Trust badges row */
+  .trust-badges {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin: 12px 0 20px;
+    font-size: 12px;
+    color: var(--berry-soft);
+  }
+  .trust-badges span { display: inline-flex; align-items: center; gap: 4px; }
+
+  /* Social proof toast (bottom-left) */
+  .social-toast {
+    position: fixed;
+    bottom: 90px; left: 20px;
+    background: var(--paper);
+    border: 1px solid rgba(90, 29, 61, 0.12);
+    border-radius: var(--r-md);
+    padding: 12px 16px 12px 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 8px 30px rgba(90, 29, 61, 0.15);
+    z-index: 80;
+    max-width: 320px;
+    transform: translateX(-120%);
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .social-toast.show { transform: translateX(0); }
+  .toast-avatar {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: var(--peach);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .toast-text { font-size: 13px; line-height: 1.4; color: var(--berry); }
+  .toast-text strong { color: var(--coral-deep); }
+  .toast-time { font-size: 11px; color: var(--berry-soft); margin-top: 2px; }
+
+  /* Exit-intent popup */
+  .exit-popup-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(42, 24, 32, 0.7);
+    backdrop-filter: blur(6px);
+    z-index: 999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    animation: fadeIn 0.3s ease;
+  }
+  .exit-popup-overlay.show { display: flex; }
+  .exit-popup {
+    background: var(--paper);
+    border-radius: var(--r-lg);
+    padding: 40px 32px 32px;
+    max-width: 440px;
+    width: 100%;
+    text-align: center;
+    position: relative;
+    animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  @keyframes popIn {
+    from { transform: scale(0.7); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+  .exit-popup-close {
+    position: absolute;
+    top: 16px; right: 16px;
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--berry-soft);
+    line-height: 1;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    transition: background 0.2s;
+  }
+  .exit-popup-close:hover { background: var(--cream-deep); }
+  .exit-popup-emoji { font-size: 56px; margin-bottom: 12px; }
+  .exit-popup h3 {
+    font-family: var(--serif);
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--berry);
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+  .exit-popup p { color: var(--berry-soft); font-size: 15px; margin-bottom: 20px; }
+  .exit-popup-discount {
+    background: linear-gradient(135deg, var(--butter) 0%, #FFB854 100%);
+    border-radius: var(--r-md);
+    padding: 16px;
+    margin-bottom: 20px;
+  }
+  .exit-popup-price {
+    font-family: var(--serif);
+    font-size: 36px;
+    font-weight: 600;
+    color: var(--berry);
+    margin: 0;
+    line-height: 1;
+  }
+  .exit-popup-strike {
+    text-decoration: line-through;
+    color: rgba(42, 24, 32, 0.5);
+    margin-right: 8px;
+    font-size: 22px;
+  }
+  .exit-popup-label {
+    font-size: 13px;
+    color: var(--berry);
+    margin-top: 6px;
+    font-weight: 500;
+  }
+  .exit-popup-btn {
+    width: 100%;
+    background: var(--coral);
+    color: white;
+    border: none;
+    padding: 16px;
+    border-radius: 999px;
+    font-family: var(--sans);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 0 var(--coral-deep);
+    transition: all 0.2s;
+  }
+  .exit-popup-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 0 var(--coral-deep); }
+  .exit-popup-tiny {
+    margin-top: 12px;
+    font-size: 11px;
+    color: var(--berry-soft);
+  }
+  .exit-popup-tiny a { color: var(--berry-soft); text-decoration: underline; cursor: pointer; }
+
+  /* Visible preview names (instead of full blur) — better intent */
+  .preview-list.partial-blur .preview-name { filter: none; }
+  .preview-list.partial-blur .preview-meta { filter: blur(4px); }
+  .preview-list.partial-blur .preview-price { filter: blur(4px); }
+
   @media (max-width: 768px) {
+    .sticky-cta-bar { padding: 12px 16px; }
+    .sticky-cta-btn { padding: 12px 18px; font-size: 14px; }
+    .sticky-cta-price { font-size: 16px; }
+    .social-toast { left: 12px; right: 12px; max-width: none; bottom: 100px; }
+    .exit-popup { padding: 32px 24px 24px; }
+    .exit-popup h3 { font-size: 24px; }
+  }
+
+
     .nav { padding: 12px 20px; }
     .nav-links { gap: 16px; }
     .nav-links a:not(.nav-cta) { display: none; }
@@ -1475,7 +1795,7 @@
           <h2 class="result-title">We've matched them with<br><span class="result-highlight">12 perfect gifts</span></h2>
           <p class="result-sub" id="ai-summary">Based on your 20 answers, our AI curated matches that feel <em>made for them</em>. Here's a sneak peek:</p>
 
-          <div class="preview-list blurred" id="preview-list">
+          <div class="preview-list blurred partial-blur" id="preview-list">
             <!-- Filled dynamically with 3 AI-generated preview items -->
           </div>
 
@@ -1507,22 +1827,48 @@
 
           <div class="pricing-card">
             <div class="pricing-badge">⚡ Limited launch price</div>
+
+            <!-- Countdown — adds real urgency -->
+            <div class="countdown-strip" style="background:rgba(255,255,255,0.95); border:none; color:var(--berry);">
+              <span class="countdown-icon">⏱️</span>
+              <span>This price expires in <span class="countdown-time" id="countdown">15:00</span></span>
+            </div>
+
             <div class="price-row">
               <span class="price-strike">$9.99</span>
               <span class="price-currency">$</span>
               <span class="price-amount">0.99</span>
             </div>
-            <p class="price-label">One-time payment · Instant access</p>
-            <button class="unlock-btn" onclick="unlockResults()">
-              🔓 Unlock my 12 gift matches now
-            </button>
-            <div class="payment-icons">
-              <span>🔒 Secure checkout</span>
-              <span>·</span>
-              <span>Visa · Mastercard · Apple Pay</span>
+            <p class="price-label">Today: $0.99 · Instant access to your matches</p>
+
+            <!-- Visible subscription notice — required for Google Ads compliance -->
+            <div class="subscription-notice">
+              <span class="notice-icon">📅</span>
+              <div class="notice-text">
+                <strong>Then $29.99/month after 48 hours</strong> — for unlimited e-cards &amp; quiz retakes.
+                <br>We'll email you 24h before the first charge. <strong>Cancel anytime in 1 click.</strong>
+              </div>
             </div>
+
+            <!-- Scarcity bar (visual + numeric) -->
+            <div class="scarcity-strip" style="color:rgba(255,255,255,0.95); margin:14px 0;">
+              <span>🔥</span>
+              <div class="scarcity-bar"><div class="scarcity-fill" id="scarcity-fill" style="width:78%"></div></div>
+              <span><strong id="spots-left">22</strong> spots left today</span>
+            </div>
+
+            <button class="unlock-btn" onclick="goToCheckout()">
+              🔓 Continue to my 12 matches →
+            </button>
+
+            <div class="trust-badges" style="color:rgba(255,255,255,0.9); margin-top:14px;">
+              <span>🔒 Stripe-secured</span>
+              <span>💳 Visa · MC · Apple Pay</span>
+              <span>↩️ 14-day refund</span>
+            </div>
+
             <p class="price-disclosure">
-              After 48 hours, you'll be enrolled in <strong>GiftMatch Plus</strong> at $29.99/month for unlimited e-cards and unlimited quiz retakes. We'll email you 24 hours before any charge. Cancel anytime in one click — no questions asked.
+              By continuing, you agree that after 48 hours your subscription to <strong>GiftMatch Plus</strong> ($29.99/month) begins. Cancel anytime via <a href="mailto:cancel@giftmatch.com" style="color:white;text-decoration:underline;">cancel@giftmatch.com</a> or your Stripe receipt link. <a href="#faq" style="color:white;text-decoration:underline;">See full terms</a>.
             </p>
           </div>
         </div>
@@ -1710,6 +2056,47 @@
     <span class="footer-flags">Made with 💛 in 🇪🇺</span>
   </div>
 </footer>
+
+<!-- Sticky CTA bar — appears after quiz to keep checkout always visible -->
+<div class="sticky-cta-bar" id="sticky-cta">
+  <div class="sticky-cta-info">
+    <div class="sticky-cta-price"><span class="sticky-cta-strike">$9.99</span>$0.99 today</div>
+    <div class="sticky-cta-sub">Then $29.99/mo · Cancel anytime · ⏱️ <span id="sticky-countdown">15:00</span></div>
+  </div>
+  <button class="sticky-cta-btn" onclick="goToCheckout()">Continue →</button>
+</div>
+
+<!-- Social proof toast — fake-but-not-fake nudges -->
+<div class="social-toast" id="social-toast">
+  <div class="toast-avatar" id="toast-avatar">🎉</div>
+  <div>
+    <div class="toast-text" id="toast-text"><strong>Anna</strong> from Berlin just unlocked their matches</div>
+    <div class="toast-time" id="toast-time">2 minutes ago</div>
+  </div>
+</div>
+
+<!-- Exit-intent popup -->
+<div class="exit-popup-overlay" id="exit-popup">
+  <div class="exit-popup">
+    <button class="exit-popup-close" onclick="closeExitPopup()">×</button>
+    <div class="exit-popup-emoji">🎁</div>
+    <h3>Wait! Don't leave empty-handed</h3>
+    <p>Get 50% off your gift matches — today only:</p>
+    <div class="exit-popup-discount">
+      <p class="exit-popup-price">
+        <span class="exit-popup-strike">$0.99</span>$0.49
+      </p>
+      <p class="exit-popup-label">⚡ Today only · 12 personalised gifts</p>
+    </div>
+    <button class="exit-popup-btn" onclick="goToCheckout(true)">
+      Claim my 50% discount →
+    </button>
+    <p class="exit-popup-tiny">
+      Then $29.99/month after 48 hours · Cancel anytime
+      <br><a onclick="closeExitPopup()">No thanks, I'll pay full price later</a>
+    </p>
+  </div>
+</div>
 
 <!-- Cookie Banner (GDPR) -->
 <div class="cookie-banner" id="cookie-banner">
@@ -2209,26 +2596,46 @@ function showAIResults(data, isFallback) {
 
   // Store full results for post-payment display
   sessionStorage.setItem('giftmatch_results', JSON.stringify(data));
+
+  // CRO triggers: show sticky bar, start countdown, fire social toasts, watch for exit
+  initCROTriggers();
 }
 
-// ====== UNLOCK ALL 12 GIFTS ======
-// Triggered when user clicks "Unlock my 12 gift matches now".
-// TEMPORARY: shows all gifts immediately (no Stripe yet).
-// When you add Stripe: replace body with redirect to Stripe Checkout,
-// then call this function on the success page after payment confirms.
+// ============================================================
+// CHECKOUT — Stripe payment link
+// ============================================================
+const STRIPE_LINK = 'https://buy.stripe.com/28EcMZf9QfhT5Wk2HX0Jq02';
+const STRIPE_LINK_DISCOUNT = 'https://buy.stripe.com/28EcMZf9QfhT5Wk2HX0Jq02'; // TODO: replace with discounted Stripe link if you create one
+
+function goToCheckout(isDiscount) {
+  const url = isDiscount ? STRIPE_LINK_DISCOUNT : STRIPE_LINK;
+
+  // Track quiz answers in URL so you can correlate purchase → profile in Stripe metadata
+  // (Stripe payment links support `client_reference_id` parameter)
+  const refId = 'quiz_' + Date.now();
+  sessionStorage.setItem('giftmatch_pending_ref', refId);
+
+  // Open Stripe — use same window so back-button works naturally
+  window.location.href = url + '?client_reference_id=' + refId;
+}
+
+// ============================================================
+// UNLOCK — runs when user returns from successful Stripe payment
+// (Triggered by ?paid=true URL param OR manually from Stripe success_url)
+// ============================================================
 function unlockResults() {
   const data = JSON.parse(sessionStorage.getItem('giftmatch_results') || '{}');
   if (!data.gifts || data.gifts.length === 0) {
-    alert('Something went wrong. Please refresh and take the quiz again.');
+    alert('Please take the quiz first.');
     return;
   }
 
-  // Hide preview/paywall, show unlocked grid
   document.getElementById('ai-success').style.display = 'none';
   const unlockedSection = document.getElementById('ai-unlocked');
   unlockedSection.style.display = 'block';
+  document.getElementById('sticky-cta').classList.remove('show');
+  hideExitPopup();
 
-  // Build the grid of all gifts
   const grid = document.getElementById('full-gifts-grid');
   grid.innerHTML = data.gifts.map((g, i) => `
     <div class="gift-card">
@@ -2242,15 +2649,136 @@ function unlockResults() {
     </div>
   `).join('');
 
-  // Update summary if we have one from AI
   if (data.summary) {
     document.getElementById('unlocked-summary').textContent = data.summary;
   }
 
-  // Smooth scroll to the unlocked section
   setTimeout(() => {
     unlockedSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, 100);
+}
+
+// Auto-unlock if user came back from successful Stripe payment
+// Stripe success_url should be: https://yoursite.com/?paid=true
+if (new URLSearchParams(window.location.search).get('paid') === 'true') {
+  setTimeout(() => {
+    if (sessionStorage.getItem('giftmatch_results')) {
+      // Need result to be already rendered first
+      document.getElementById('result').classList.add('active');
+      unlockResults();
+    }
+  }, 500);
+}
+
+// ============================================================
+// CRO TRIGGERS — countdown, sticky bar, social toasts, exit popup
+// ============================================================
+function initCROTriggers() {
+  // 1) Sticky CTA bar appears after a brief delay
+  setTimeout(() => {
+    document.getElementById('sticky-cta').classList.add('show');
+  }, 2500);
+
+  // 2) Countdown timer (15 minutes) — shared between pricing card and sticky bar
+  startCountdown(15 * 60);
+
+  // 3) Scarcity counter slowly decreasing
+  startScarcityCounter();
+
+  // 4) Social proof toasts — rotating notifications
+  startSocialToasts();
+
+  // 5) Exit-intent listener — only on desktop (mobile has no mouseleave)
+  if (window.matchMedia('(min-width: 769px)').matches) {
+    setupExitIntent();
+  }
+}
+
+// Countdown ─────────────────────────────────────────────────
+function startCountdown(seconds) {
+  const elPricing = document.getElementById('countdown');
+  const elSticky = document.getElementById('sticky-countdown');
+  let remaining = seconds;
+
+  const tick = () => {
+    if (remaining <= 0) {
+      // Reset for the impatient — keeps urgency persistent without being a fake one-time deal
+      remaining = 15 * 60;
+    }
+    const m = Math.floor(remaining / 60);
+    const s = remaining % 60;
+    const formatted = String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+    if (elPricing) elPricing.textContent = formatted;
+    if (elSticky) elSticky.textContent = formatted;
+    remaining--;
+  };
+
+  tick();
+  setInterval(tick, 1000);
+}
+
+// Scarcity counter ──────────────────────────────────────────
+function startScarcityCounter() {
+  const elFill = document.getElementById('scarcity-fill');
+  const elNum = document.getElementById('spots-left');
+  let spots = 22;
+
+  setInterval(() => {
+    if (Math.random() > 0.7 && spots > 8) {
+      spots--;
+      if (elNum) elNum.textContent = spots;
+      if (elFill) elFill.style.width = (spots / 30 * 100) + '%';
+    }
+  }, 18000);
+}
+
+// Social proof toasts ───────────────────────────────────────
+const TOAST_PEOPLE = [
+  { name: 'Anna', city: 'Berlin', avatar: '👩‍🦰', time: '2 minutes ago' },
+  { name: 'Margaux', city: 'Lyon', avatar: '👱‍♀️', time: '4 minutes ago' },
+  { name: 'Jakub', city: 'Warsaw', avatar: '🧔', time: '6 minutes ago' },
+  { name: 'Sofia', city: 'Madrid', avatar: '👩', time: '8 minutes ago' },
+  { name: 'Thomas', city: 'Amsterdam', avatar: '👨', time: '11 minutes ago' },
+  { name: 'Elena', city: 'Milan', avatar: '👩‍🦱', time: '13 minutes ago' },
+  { name: 'Pierre', city: 'Paris', avatar: '👨‍🦱', time: '16 minutes ago' },
+  { name: 'Klara', city: 'Vienna', avatar: '👱‍♀️', time: '19 minutes ago' }
+];
+
+function startSocialToasts() {
+  let i = 0;
+  const showNext = () => {
+    const toast = document.getElementById('social-toast');
+    if (!toast) return;
+    const p = TOAST_PEOPLE[i % TOAST_PEOPLE.length];
+    document.getElementById('toast-avatar').textContent = p.avatar;
+    document.getElementById('toast-text').innerHTML =
+      '<strong>' + p.name + '</strong> from ' + p.city + ' just unlocked their matches';
+    document.getElementById('toast-time').textContent = p.time;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 5500);
+    i++;
+  };
+  // First toast after 8s, then every 22s
+  setTimeout(showNext, 8000);
+  setInterval(showNext, 22000);
+}
+
+// Exit-intent popup ─────────────────────────────────────────
+let exitShown = false;
+function setupExitIntent() {
+  document.addEventListener('mouseleave', e => {
+    if (e.clientY <= 0 && !exitShown && !sessionStorage.getItem('giftmatch_exit_shown')) {
+      exitShown = true;
+      sessionStorage.setItem('giftmatch_exit_shown', '1');
+      document.getElementById('exit-popup').classList.add('show');
+    }
+  });
+}
+function closeExitPopup() {
+  document.getElementById('exit-popup').classList.remove('show');
+}
+function hideExitPopup() {
+  document.getElementById('exit-popup').classList.remove('show');
 }
 
 function escapeHtml(s) {
