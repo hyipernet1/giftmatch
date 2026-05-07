@@ -1557,107 +1557,6 @@
   .toast-text strong { color: var(--coral-deep); }
   .toast-time { font-size: 11px; color: var(--berry-soft); margin-top: 2px; }
 
-  /* Exit-intent popup */
-  .exit-popup-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(42, 24, 32, 0.7);
-    backdrop-filter: blur(6px);
-    z-index: 999;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    animation: fadeIn 0.3s ease;
-  }
-  .exit-popup-overlay.show { display: flex; }
-  .exit-popup {
-    background: var(--paper);
-    border-radius: var(--r-lg);
-    padding: 40px 32px 32px;
-    max-width: 440px;
-    width: 100%;
-    text-align: center;
-    position: relative;
-    animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-  @keyframes popIn {
-    from { transform: scale(0.7); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
-  }
-  .exit-popup-close {
-    position: absolute;
-    top: 16px; right: 16px;
-    background: transparent;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-    color: var(--berry-soft);
-    line-height: 1;
-    width: 32px; height: 32px;
-    border-radius: 50%;
-    transition: background 0.2s;
-  }
-  .exit-popup-close:hover { background: var(--cream-deep); }
-  .exit-popup-emoji { font-size: 56px; margin-bottom: 12px; }
-  .exit-popup h3 {
-    font-family: var(--serif);
-    font-size: 28px;
-    font-weight: 500;
-    color: var(--berry);
-    margin-bottom: 8px;
-    letter-spacing: -0.01em;
-    line-height: 1.2;
-  }
-  .exit-popup p { color: var(--berry-soft); font-size: 15px; margin-bottom: 20px; }
-  .exit-popup-discount {
-    background: linear-gradient(135deg, var(--butter) 0%, #FFB854 100%);
-    border-radius: var(--r-md);
-    padding: 16px;
-    margin-bottom: 20px;
-  }
-  .exit-popup-price {
-    font-family: var(--serif);
-    font-size: 36px;
-    font-weight: 600;
-    color: var(--berry);
-    margin: 0;
-    line-height: 1;
-  }
-  .exit-popup-strike {
-    text-decoration: line-through;
-    color: rgba(42, 24, 32, 0.5);
-    margin-right: 8px;
-    font-size: 22px;
-  }
-  .exit-popup-label {
-    font-size: 13px;
-    color: var(--berry);
-    margin-top: 6px;
-    font-weight: 500;
-  }
-  .exit-popup-btn {
-    width: 100%;
-    background: var(--coral);
-    color: white;
-    border: none;
-    padding: 16px;
-    border-radius: 999px;
-    font-family: var(--sans);
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    box-shadow: 0 4px 0 var(--coral-deep);
-    transition: all 0.2s;
-  }
-  .exit-popup-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 0 var(--coral-deep); }
-  .exit-popup-tiny {
-    margin-top: 12px;
-    font-size: 11px;
-    color: var(--berry-soft);
-  }
-  .exit-popup-tiny a { color: var(--berry-soft); text-decoration: underline; cursor: pointer; }
-
   /* Visible preview names (instead of full blur) — better intent */
   .preview-list.partial-blur .preview-name { filter: none; }
   .preview-list.partial-blur .preview-meta { filter: blur(4px); }
@@ -1668,8 +1567,6 @@
     .sticky-cta-btn { padding: 12px 18px; font-size: 14px; }
     .sticky-cta-price { font-size: 16px; }
     .social-toast { left: 12px; right: 12px; max-width: none; bottom: 100px; }
-    .exit-popup { padding: 32px 24px 24px; }
-    .exit-popup h3 { font-size: 24px; }
   }
 
 
@@ -1860,7 +1757,7 @@
             </div>
 
             <p class="agree-text-line">
-              By continuing, you agree to GiftMatch's <a href="#faq">Terms</a> and <a href="#faq">Privacy Policy</a>. Your purchase includes a 12-gift report and a 2-day trial of GiftMatch Plus. After the trial, your subscription auto-renews at <strong>$29.99/month</strong> until you cancel. Cancel anytime — no questions asked.
+              By continuing, you agree to GiftMatch's <a href="#faq">Terms</a> and <a href="#faq">Privacy Policy</a>. Your purchase includes a 12-gift report and a 2-day trial of GiftMatch Plus. After the trial, your subscription auto-renews at $29.99/month until you cancel. Cancel anytime — no questions asked.
             </p>
 
             <button class="unlock-btn" onclick="goToCheckout()">
@@ -2083,29 +1980,6 @@
   <div>
     <div class="toast-text" id="toast-text"><strong>Anna</strong> from Berlin just unlocked their matches</div>
     <div class="toast-time" id="toast-time">2 minutes ago</div>
-  </div>
-</div>
-
-<!-- Exit-intent popup -->
-<div class="exit-popup-overlay" id="exit-popup">
-  <div class="exit-popup">
-    <button class="exit-popup-close" onclick="closeExitPopup()">×</button>
-    <div class="exit-popup-emoji">🎁</div>
-    <h3>Wait! Don't leave empty-handed</h3>
-    <p>Get 50% off your gift matches — today only:</p>
-    <div class="exit-popup-discount">
-      <p class="exit-popup-price">
-        <span class="exit-popup-strike">$0.99</span>$0.49
-      </p>
-      <p class="exit-popup-label">⚡ Today only · 12 personalised gifts</p>
-    </div>
-    <button class="exit-popup-btn" onclick="goToCheckout(true)">
-      Claim my 50% discount →
-    </button>
-    <p class="exit-popup-tiny">
-      Then $29.99/month after 48 hours · Cancel anytime
-      <br><a onclick="closeExitPopup()">No thanks, I'll pay full price later</a>
-    </p>
   </div>
 </div>
 
@@ -2616,18 +2490,14 @@ function showAIResults(data, isFallback) {
 // CHECKOUT — Stripe payment link
 // ============================================================
 const STRIPE_LINK = 'https://buy.stripe.com/28EcMZf9QfhT5Wk2HX0Jq02';
-const STRIPE_LINK_DISCOUNT = 'https://buy.stripe.com/28EcMZf9QfhT5Wk2HX0Jq02'; // TODO: replace with discounted Stripe link if you create one
 
-function goToCheckout(isDiscount) {
-  const url = isDiscount ? STRIPE_LINK_DISCOUNT : STRIPE_LINK;
-
+function goToCheckout() {
   // Track quiz answers in URL so you can correlate purchase → profile in Stripe metadata
-  // (Stripe payment links support `client_reference_id` parameter)
   const refId = 'quiz_' + Date.now();
   sessionStorage.setItem('giftmatch_pending_ref', refId);
 
   // Open Stripe — use same window so back-button works naturally
-  window.location.href = url + '?client_reference_id=' + refId;
+  window.location.href = STRIPE_LINK + '?client_reference_id=' + refId;
 }
 
 // ============================================================
@@ -2645,7 +2515,6 @@ function unlockResults() {
   const unlockedSection = document.getElementById('ai-unlocked');
   unlockedSection.style.display = 'block';
   document.getElementById('sticky-cta').classList.remove('show');
-  hideExitPopup();
 
   const grid = document.getElementById('full-gifts-grid');
   grid.innerHTML = data.gifts.map((g, i) => `
@@ -2698,11 +2567,6 @@ function initCROTriggers() {
 
   // 4) Social proof toasts — rotating notifications
   startSocialToasts();
-
-  // 5) Exit-intent listener — only on desktop (mobile has no mouseleave)
-  if (window.matchMedia('(min-width: 769px)').matches) {
-    setupExitIntent();
-  }
 }
 
 // Countdown ─────────────────────────────────────────────────
@@ -2772,24 +2636,6 @@ function startSocialToasts() {
   // First toast after 8s, then every 22s
   setTimeout(showNext, 8000);
   setInterval(showNext, 22000);
-}
-
-// Exit-intent popup ─────────────────────────────────────────
-let exitShown = false;
-function setupExitIntent() {
-  document.addEventListener('mouseleave', e => {
-    if (e.clientY <= 0 && !exitShown && !sessionStorage.getItem('giftmatch_exit_shown')) {
-      exitShown = true;
-      sessionStorage.setItem('giftmatch_exit_shown', '1');
-      document.getElementById('exit-popup').classList.add('show');
-    }
-  });
-}
-function closeExitPopup() {
-  document.getElementById('exit-popup').classList.remove('show');
-}
-function hideExitPopup() {
-  document.getElementById('exit-popup').classList.remove('show');
 }
 
 function escapeHtml(s) {
