@@ -987,7 +987,7 @@
     align-items: baseline;
     justify-content: center;
     gap: 6px;
-    margin-bottom: 4px;
+    margin-bottom: 8px;
     position: relative;
   }
   .price-strike {
@@ -1000,36 +1000,61 @@
   .price-currency { font-size: 24px; font-weight: 600; }
   .price-amount { font-family: var(--serif); font-size: 64px; font-weight: 600; line-height: 1; font-variation-settings: "WONK" 1; }
   .price-period { opacity: 0.9; font-size: 14px; }
-  .price-label { font-size: 14px; opacity: 0.95; margin-bottom: 20px; position: relative; }
-
-  /* Subscription notice — visible disclosure required for compliance */
-  .subscription-notice {
-    background: rgba(255, 255, 255, 0.18);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: var(--r-sm);
-    padding: 12px 14px;
-    margin-bottom: 16px;
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    text-align: left;
+  .price-label {
+    font-size: 14px;
+    opacity: 0.95;
+    margin-bottom: 18px;
     position: relative;
-    backdrop-filter: blur(4px);
   }
-  .notice-icon {
-    font-size: 20px;
-    flex-shrink: 0;
-    line-height: 1.3;
-  }
-  .notice-text {
-    color: white;
-    font-size: 13px;
+
+  /* ===== Disclosure text above button ===== */
+  .agree-text-line {
+    color: rgba(255, 255, 255, 0.88);
+    font-size: 11px;
     line-height: 1.5;
-    flex: 1;
+    margin: 16px 0 16px;
+    padding: 0 4px;
+    text-align: center;
+    position: relative;
   }
-  .notice-text strong {
+  .agree-text-line strong {
     color: white;
     font-weight: 600;
+  }
+  .agree-text-line a {
+    color: white;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    font-weight: 500;
+  }
+  .agree-text-line a:hover { opacity: 0.8; }
+
+  /* ===== Trust badges row (CheckCar.VIN style, our palette) ===== */
+  .trust-badges-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-top: 18px;
+    position: relative;
+  }
+  .trust-badge {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: var(--r-sm);
+    padding: 12px 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    text-align: center;
+    backdrop-filter: blur(4px);
+  }
+  .trust-badge-icon { font-size: 22px; line-height: 1; }
+  .trust-badge-text {
+    font-size: 11px;
+    color: white;
+    font-weight: 500;
+    line-height: 1.3;
   }
   .unlock-btn {
     background: var(--berry);
@@ -1828,48 +1853,34 @@
           <div class="pricing-card">
             <div class="pricing-badge">⚡ Limited launch price</div>
 
-            <!-- Countdown — adds real urgency -->
-            <div class="countdown-strip" style="background:rgba(255,255,255,0.95); border:none; color:var(--berry);">
-              <span class="countdown-icon">⏱️</span>
-              <span>This price expires in <span class="countdown-time" id="countdown">15:00</span></span>
-            </div>
-
             <div class="price-row">
               <span class="price-strike">$9.99</span>
               <span class="price-currency">$</span>
               <span class="price-amount">0.99</span>
             </div>
-            <p class="price-label">Today: $0.99 · Instant access to your matches</p>
 
-            <!-- Visible subscription notice — required for Google Ads compliance -->
-            <div class="subscription-notice">
-              <span class="notice-icon">📅</span>
-              <div class="notice-text">
-                <strong>Then $29.99/month after 48 hours</strong> — for unlimited e-cards &amp; quiz retakes.
-                <br>We'll email you 24h before the first charge. <strong>Cancel anytime in 1 click.</strong>
-              </div>
-            </div>
-
-            <!-- Scarcity bar (visual + numeric) -->
-            <div class="scarcity-strip" style="color:rgba(255,255,255,0.95); margin:14px 0;">
-              <span>🔥</span>
-              <div class="scarcity-bar"><div class="scarcity-fill" id="scarcity-fill" style="width:78%"></div></div>
-              <span><strong id="spots-left">22</strong> spots left today</span>
-            </div>
+            <p class="agree-text-line">
+              By continuing, you agree to GiftMatch's <a href="#faq">Terms</a> and <a href="#faq">Privacy Policy</a>. Your purchase includes a 12-gift report and a 2-day trial of GiftMatch Plus. After the trial, your subscription auto-renews at <strong>$29.99/month</strong> until you cancel. Cancel anytime — no questions asked.
+            </p>
 
             <button class="unlock-btn" onclick="goToCheckout()">
-              🔓 Continue to my 12 matches →
+              Pay now $0.99
             </button>
 
-            <div class="trust-badges" style="color:rgba(255,255,255,0.9); margin-top:14px;">
-              <span>🔒 Stripe-secured</span>
-              <span>💳 Visa · MC · Apple Pay</span>
-              <span>↩️ 14-day refund</span>
+            <div class="trust-badges-row">
+              <div class="trust-badge">
+                <span class="trust-badge-icon">🔒</span>
+                <span class="trust-badge-text">Secure<br>checkout</span>
+              </div>
+              <div class="trust-badge">
+                <span class="trust-badge-icon">↩️</span>
+                <span class="trust-badge-text">14-day<br>refund</span>
+              </div>
+              <div class="trust-badge">
+                <span class="trust-badge-icon">🛡️</span>
+                <span class="trust-badge-text">Money-back<br>guarantee</span>
+              </div>
             </div>
-
-            <p class="price-disclosure">
-              By continuing, you agree that after 48 hours your subscription to <strong>GiftMatch Plus</strong> ($29.99/month) begins. Cancel anytime via <a href="mailto:cancel@giftmatch.com" style="color:white;text-decoration:underline;">cancel@giftmatch.com</a> or your Stripe receipt link. <a href="#faq" style="color:white;text-decoration:underline;">See full terms</a>.
-            </p>
           </div>
         </div>
 
