@@ -669,6 +669,121 @@
     50% { transform: scale(1.15); }
   }
 
+  /* ===== AI UNLOCKED STATE — all 12 gifts visible ===== */
+  .ai-unlocked {
+    text-align: center;
+    padding: 8px 0;
+    animation: fadeIn 0.6s ease;
+  }
+  .unlock-celebration {
+    font-size: 80px;
+    margin-bottom: 16px;
+    animation: celebrate 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  @keyframes celebrate {
+    0% { transform: scale(0.3) rotate(-30deg); opacity: 0; }
+    60% { transform: scale(1.2) rotate(10deg); opacity: 1; }
+    100% { transform: scale(1) rotate(0); opacity: 1; }
+  }
+
+  .full-gifts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    margin: 28px 0;
+    text-align: left;
+  }
+
+  .gift-card {
+    background: var(--cream);
+    border: 1px solid rgba(90, 29, 61, 0.1);
+    border-radius: var(--r-md);
+    padding: 18px 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    transition: all 0.25s ease;
+    position: relative;
+  }
+  .gift-card:hover {
+    border-color: var(--coral);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(232, 90, 61, 0.12);
+  }
+
+  .gift-rank {
+    position: absolute;
+    top: -8px;
+    left: -8px;
+    background: var(--coral);
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(232, 90, 61, 0.4);
+  }
+  .gift-rank.top-three { background: var(--butter); color: var(--berry); }
+
+  .gift-emoji {
+    font-size: 38px;
+    flex-shrink: 0;
+    width: 56px;
+    height: 56px;
+    background: var(--paper);
+    border-radius: var(--r-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(90, 29, 61, 0.06);
+  }
+
+  .gift-info { flex: 1; min-width: 0; }
+  .gift-name {
+    font-family: var(--serif);
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--berry);
+    line-height: 1.25;
+    margin-bottom: 4px;
+    letter-spacing: -0.01em;
+  }
+  .gift-meta {
+    font-size: 13px;
+    color: var(--berry-soft);
+    line-height: 1.4;
+    margin-bottom: 8px;
+  }
+  .gift-price {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--coral-deep);
+    font-style: italic;
+  }
+
+  .unlock-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 24px;
+  }
+  .unlock-action-btn { padding: 14px 24px !important; font-size: 15px !important; }
+
+  /* Print-friendly — when user prints, hide everything except the gift list */
+  @media print {
+    body * { visibility: hidden; }
+    .ai-unlocked, .ai-unlocked * { visibility: visible; }
+    .ai-unlocked { position: absolute; left: 0; top: 0; padding: 20px; }
+    .unlock-actions { display: none; }
+    .gift-card { break-inside: avoid; box-shadow: none !important; transform: none !important; }
+  }
+
   /* Result state */
   .result-state { display: none; text-align: center; }
   .result-state.active { display: block; animation: fadeIn 0.5s ease; }
@@ -1398,7 +1513,7 @@
               <span class="price-amount">0.99</span>
             </div>
             <p class="price-label">One-time payment · Instant access</p>
-            <button class="unlock-btn" onclick="alert('In production, this would route to Stripe checkout.')">
+            <button class="unlock-btn" onclick="unlockResults()">
               🔓 Unlock my 12 gift matches now
             </button>
             <div class="payment-icons">
@@ -1409,6 +1524,27 @@
             <p class="price-disclosure">
               After 48 hours, you'll be enrolled in <strong>GiftMatch Plus</strong> at $29.99/month for unlimited e-cards and unlimited quiz retakes. We'll email you 24 hours before any charge. Cancel anytime in one click — no questions asked.
             </p>
+          </div>
+        </div>
+
+        <!-- UNLOCKED state — all 12 gifts visible (shown after clicking Unlock) -->
+        <div class="ai-unlocked" id="ai-unlocked" style="display:none;">
+          <div class="unlock-celebration">🎁</div>
+          <div class="result-success-pill" style="background:#FFE8C7;color:#854F0B;">⚡ All 12 gifts unlocked</div>
+          <h2 class="result-title">Here are their <span class="result-highlight">perfect matches</span></h2>
+          <p class="result-sub" id="unlocked-summary">Hand-picked by AI based on your 20 answers. Each one ships across the EU.</p>
+
+          <div class="full-gifts-grid" id="full-gifts-grid">
+            <!-- Filled dynamically with all 12 gifts -->
+          </div>
+
+          <div class="unlock-actions">
+            <button class="btn-secondary unlock-action-btn" onclick="window.location.reload()">
+              🔄 Take quiz again
+            </button>
+            <button class="btn-primary unlock-action-btn" onclick="window.print()">
+              🖨️ Save / print list
+            </button>
           </div>
         </div>
       </div>
@@ -2027,20 +2163,71 @@ function showAIResults(data, isFallback) {
   sessionStorage.setItem('giftmatch_results', JSON.stringify(data));
 }
 
+// ====== UNLOCK ALL 12 GIFTS ======
+// Triggered when user clicks "Unlock my 12 gift matches now".
+// TEMPORARY: shows all gifts immediately (no Stripe yet).
+// When you add Stripe: replace body with redirect to Stripe Checkout,
+// then call this function on the success page after payment confirms.
+function unlockResults() {
+  const data = JSON.parse(sessionStorage.getItem('giftmatch_results') || '{}');
+  if (!data.gifts || data.gifts.length === 0) {
+    alert('Something went wrong. Please refresh and take the quiz again.');
+    return;
+  }
+
+  // Hide preview/paywall, show unlocked grid
+  document.getElementById('ai-success').style.display = 'none';
+  const unlockedSection = document.getElementById('ai-unlocked');
+  unlockedSection.style.display = 'block';
+
+  // Build the grid of all gifts
+  const grid = document.getElementById('full-gifts-grid');
+  grid.innerHTML = data.gifts.map((g, i) => `
+    <div class="gift-card">
+      <div class="gift-rank ${i < 3 ? 'top-three' : ''}">${i + 1}</div>
+      <div class="gift-emoji">${g.emoji}</div>
+      <div class="gift-info">
+        <div class="gift-name">${escapeHtml(g.name)}</div>
+        <div class="gift-meta">${escapeHtml(g.meta)}</div>
+        <div class="gift-price">€${g.price_eur}</div>
+      </div>
+    </div>
+  `).join('');
+
+  // Update summary if we have one from AI
+  if (data.summary) {
+    document.getElementById('unlocked-summary').textContent = data.summary;
+  }
+
+  // Smooth scroll to the unlocked section
+  setTimeout(() => {
+    unlockedSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 100);
+}
+
 function escapeHtml(s) {
   return String(s).replace(/[&<>"']/g, c => ({
     '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
   }[c]));
 }
 
-// Fallback gifts — used if API fails so UX never breaks
+// Fallback gifts — 12 generic but solid options if API fails. UX never breaks.
 function getFallbackGifts() {
   return {
-    summary: 'Based on your answers, here are 12 thoughtfully curated matches.',
+    summary: 'Based on your answers, here are 12 thoughtfully curated matches across every budget.',
     gifts: [
       { emoji: '🪴', name: 'Artisan ceramic plant pot set', meta: 'From a Lisbon ceramicist', price_eur: 35 },
       { emoji: '📚', name: 'Personalised poetry collection', meta: 'Hand-bound, ships from Berlin', price_eur: 48 },
-      { emoji: '🕯️', name: 'Provençal scented candle trio', meta: 'Lavender, fig & rosemary', price_eur: 30 }
+      { emoji: '🕯️', name: 'Provençal scented candle trio', meta: 'Lavender, fig & rosemary', price_eur: 30 },
+      { emoji: '☕', name: 'Italian espresso cup set', meta: 'Hand-thrown porcelain from Florence', price_eur: 55 },
+      { emoji: '🧣', name: 'Merino wool blanket', meta: 'Made by a Scottish family mill', price_eur: 89 },
+      { emoji: '🍫', name: 'Belgian artisan chocolate box', meta: 'Single-origin, ethically sourced', price_eur: 28 },
+      { emoji: '🎨', name: 'Watercolour starter kit', meta: 'For the creative soul in them', price_eur: 65 },
+      { emoji: '🍷', name: 'Natural wine subscription', meta: 'Three months of European discoveries', price_eur: 95 },
+      { emoji: '🛁', name: 'French apothecary bath set', meta: 'Lavender, rose & oat milk', price_eur: 42 },
+      { emoji: '📷', name: 'Instant camera + film bundle', meta: 'For making real-life memories', price_eur: 145 },
+      { emoji: '🧴', name: 'Skincare ritual collection', meta: 'Made in Provence, plant-based', price_eur: 78 },
+      { emoji: '🎟️', name: 'European cooking class voucher', meta: 'Learn from local chefs online', price_eur: 120 }
     ]
   };
 }
